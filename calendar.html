@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="theme.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyFlow - Calendar</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#edf0ff;
+      color:#1f2340;
+    }
+
+    .container{
+      display:flex;
+      min-height:100vh;
+    }
+
+    .sidebar{
+      width:270px;
+      background:linear-gradient(180deg,#6d79ff,#7357d8);
+      padding:24px 18px;
+      color:white;
+    }
+
+    .brand-box{
+      background:rgba(255,255,255,0.12);
+      border-radius:24px;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:24px;
+    }
+
+    .brand-box img{
+      width:68px;
+      height:68px;
+      border-radius:50%;
+      object-fit:cover;
+      background:white;
+      padding:4px;
+      flex-shrink:0;
+    }
+
+    .brand-text h2{
+      font-size:22px;
+      margin-bottom:4px;
+    }
+
+    .brand-text p{
+      font-size:14px;
+      color:rgba(255,255,255,0.85);
+      line-height:1.4;
+    }
+
+    .menu{
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .menu li{
+      background:rgba(255,255,255,0.11);
+      border-radius:18px;
+      padding:16px 18px;
+      transition:0.25s ease;
+      font-size:17px;
+      font-weight:600;
+    }
+
+    .menu li:hover,
+    .menu li.active{
+      background:rgba(255,255,255,0.23);
+      transform:translateX(4px);
+    }
+
+    .menu li a,
+    .menu li a:visited,
+    .menu li a:hover,
+    .menu li a:active{
+      text-decoration:none;
+      color:white;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      width:100%;
+    }
+
+    .main{
+      flex:1;
+      padding:28px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:24px;
+      gap:16px;
+    }
+
+    .topbar h1{
+      font-size:42px;
+      margin-bottom:6px;
+    }
+
+    .topbar p{
+      color:#6e7399;
+      font-size:16px;
+    }
+
+    .add-btn{
+      text-decoration:none;
+      display:inline-block;
+      border:none;
+      background:linear-gradient(135deg,#6d79ff,#7357d8);
+      color:white;
+      padding:14px 20px;
+      border-radius:16px;
+      font-size:15px;
+      font-weight:bold;
+      box-shadow:0 10px 20px rgba(109,121,255,0.22);
+    }
+
+    .calendar-layout{
+      display:grid;
+      grid-template-columns:1.45fr 0.8fr;
+      gap:22px;
+    }
+
+    .panel{
+      background:white;
+      border-radius:24px;
+      padding:22px;
+      box-shadow:0 12px 28px rgba(41,48,95,0.08);
+    }
+
+    .month-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
+    }
+
+    .month-header h2{
+      font-size:28px;
+    }
+
+    .month-nav{
+      display:flex;
+      gap:10px;
+    }
+
+    .month-nav button{
+      width:40px;
+      height:40px;
+      border:none;
+      border-radius:12px;
+      background:#eef1ff;
+      color:#5560c7;
+      font-size:18px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .weekdays,
+    .dates{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:12px;
+    }
+
+    .weekdays div{
+      text-align:center;
+      color:#7a809e;
+      font-weight:700;
+      font-size:14px;
+      padding-bottom:4px;
+    }
+
+    .date-box{
+      min-height:108px;
+      background:#f7f8fd;
+      border-radius:18px;
+      padding:12px;
+      position:relative;
+      transition:0.2s;
+    }
+
+    .date-box:hover{
+      transform:translateY(-3px);
+      box-shadow:0 8px 18px rgba(60,70,130,0.08);
+    }
+
+    .date-num{
+      font-size:18px;
+      font-weight:bold;
+      margin-bottom:10px;
+      color:#1f2340;
+    }
+
+    .other-month .date-num{
+      color:#b3b8d2;
+    }
+
+    .today{
+      border:2px solid #6d79ff;
+      background:#eef1ff;
+    }
+
+    .event{
+      display:inline-block;
+      padding:6px 8px;
+      border-radius:10px;
+      font-size:12px;
+      margin-bottom:6px;
+      font-weight:600;
+    }
+
+    .event.purple{
+      background:#e7eaff;
+      color:#5761be;
+    }
+
+    .event.pink{
+      background:#ffe2ef;
+      color:#df5f8c;
+    }
+
+    .event.green{
+      background:#dcf8ea;
+      color:#19a15f;
+    }
+
+    .event.blue{
+      background:#dff4ff;
+      color:#1d91d0;
+    }
+
+    .side-title{
+      font-size:26px;
+      margin-bottom:18px;
+    }
+
+    .event-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-bottom:24px;
+    }
+
+    .event-card{
+      background:#f6f7fc;
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .event-card h4{
+      font-size:17px;
+      margin-bottom:6px;
+    }
+
+    .event-card p{
+      color:#747a9b;
+      font-size:14px;
+      margin-bottom:10px;
+    }
+
+    .tag{
+      display:inline-block;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    .high{
+      background:#ffe4eb;
+      color:#dd4c7f;
+    }
+
+    .medium{
+      background:#fff0cf;
+      color:#b88313;
+    }
+
+    .done{
+      background:#dff8ed;
+      color:#18a05d;
+    }
+
+    .schedule-box{
+      background:linear-gradient(135deg,#6d79ff,#7357d8);
+      color:white;
+      border-radius:22px;
+      padding:20px;
+    }
+
+    .schedule-box h3{
+      font-size:24px;
+      margin-bottom:16px;
+    }
+
+    .schedule-item{
+      background:rgba(255,255,255,0.12);
+      border-radius:14px;
+      padding:12px 14px;
+      margin-bottom:10px;
+    }
+
+    .schedule-item strong{
+      display:block;
+      margin-bottom:4px;
+      font-size:15px;
+    }
+
+    .schedule-item span{
+      font-size:13px;
+      opacity:0.9;
+    }
+
+    @media (max-width:1200px){
+      .calendar-layout{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:900px){
+      .container{
+        flex-direction:column;
+      }
+
+      .sidebar{
+        width:100%;
+      }
+    }
+
+    @media (max-width:700px){
+      .weekdays,
+      .dates{
+        gap:8px;
+      }
+
+      .date-box{
+        min-height:88px;
+        padding:10px;
+      }
+
+      .topbar h1{
+        font-size:32px;
+      }
+
+      .month-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:12px;
+      }
+    }
+
+    @media (max-width:560px){
+      .weekdays div{
+        font-size:12px;
+      }
+
+      .date-num{
+        font-size:15px;
+      }
+
+      .event{
+        font-size:10px;
+        padding:5px 6px;
+      }
+
+      .main{
+        padding:18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="brand-box">
+        <img src="IMAGE3/logo-StudyFlow3.png" alt="StudyFlow Logo">
+        <div class="brand-text">
+          <h2>StudyFlow</h2>
+          <p>Plan smarter. Study better.</p>
+        </div>
+      </div>
+
+      <ul class="menu">
+        <li><a href="dashboard_StudyFlow.html">🏠 Dashboard <span>›</span></a></li>
+        <li><a href="subjects.html">📚 Subjects <span>›</span></a></li>
+        <li><a href="tasks.html">📝 Tasks <span>›</span></a></li>
+        <li class="active"><a href="calendar.html">📅 Calendar <span>›</span></a></li>
+        <li><a href="progress.html">📈 Progress <span>›</span></a></li>
+        <li><a href="notes.html">📓 Notes <span>›</span></a></li>
+        <li><a href="settings.html">⚙️ Settings <span>›</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h1>Calendar</h1>
+          <p>View your study schedule, deadlines, and weekly events.</p>
+        </div>
+        <a href="tasks.html" class="add-btn">+ Add Event</a>
+      </div>
+
+      <div class="calendar-layout">
+        <section class="panel">
+          <div class="month-header">
+            <h2>May 2026</h2>
+            <div class="month-nav">
+              <button>‹</button>
+              <button>›</button>
+            </div>
+          </div>
+
+          <div class="weekdays">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+
+          <div class="dates">
+            <div class="date-box other-month"><div class="date-num">26</div></div>
+            <div class="date-box other-month"><div class="date-num">27</div></div>
+            <div class="date-box other-month"><div class="date-num">28</div></div>
+            <div class="date-box other-month"><div class="date-num">29</div></div>
+            <div class="date-box other-month"><div class="date-num">30</div></div>
+            <div class="date-box"><div class="date-num">1</div></div>
+            <div class="date-box"><div class="date-num">2</div></div>
+
+            <div class="date-box">
+              <div class="date-num">3</div>
+              <div class="event purple">Web Quiz</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">4</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">5</div>
+              <div class="event pink">ML Task</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">6</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">7</div>
+              <div class="event green">OS Review</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">8</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">9</div>
+            </div>
+
+            <div class="date-box">
+              <div class="date-num">10</div>
+            </div>
+            <div class="date-box today">
+              <div class="date-num">11</div>
+              <div class="event blue">Today</div>
+              <div class="event purple">Project</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">12</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">13</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">14</div>
+              <div class="event pink">Meeting</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">15</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">16</div>
+            </div>
+
+            <div class="date-box">
+              <div class="date-num">17</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">18</div>
+              <div class="event purple">Algorithms</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">19</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">20</div>
+              <div class="event green">Exam Prep</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">21</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">22</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">23</div>
+            </div>
+
+            <div class="date-box">
+              <div class="date-num">24</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">25</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">26</div>
+              <div class="event blue">Presentation</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">27</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">28</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">29</div>
+            </div>
+            <div class="date-box">
+              <div class="date-num">30</div>
+            </div>
+
+            <div class="date-box">
+              <div class="date-num">31</div>
+            </div>
+            <div class="date-box other-month"><div class="date-num">1</div></div>
+            <div class="date-box other-month"><div class="date-num">2</div></div>
+            <div class="date-box other-month"><div class="date-num">3</div></div>
+            <div class="date-box other-month"><div class="date-num">4</div></div>
+            <div class="date-box other-month"><div class="date-num">5</div></div>
+            <div class="date-box other-month"><div class="date-num">6</div></div>
+          </div>
+        </section>
+
+        <aside>
+          <div class="panel">
+            <h3 class="side-title">Upcoming Events</h3>
+
+            <div class="event-list">
+              <div class="event-card">
+                <h4>Web Development Quiz</h4>
+                <p>May 3 • 10:00 AM</p>
+                <span class="tag high">High</span>
+              </div>
+
+              <div class="event-card">
+                <h4>Machine Learning Task</h4>
+                <p>May 5 • 4:00 PM</p>
+                <span class="tag medium">Medium</span>
+              </div>
+
+              <div class="event-card">
+                <h4>Operating Systems Review</h4>
+                <p>May 7 • 6:00 PM</p>
+                <span class="tag done">Done</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="schedule-box" style="margin-top:22px;">
+            <h3>Today’s Schedule</h3>
+
+            <div class="schedule-item">
+              <strong>9:00 AM - Web Development</strong>
+              <span>Revise lecture slides and notes</span>
+            </div>
+
+            <div class="schedule-item">
+              <strong>1:00 PM - Algorithms</strong>
+              <span>Solve divide & conquer exercises</span>
+            </div>
+
+            <div class="schedule-item">
+              <strong>7:00 PM - Machine Learning</strong>
+              <span>Review supervised learning concepts</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+<script src="theme.js"></script>
+</body>
+</html>

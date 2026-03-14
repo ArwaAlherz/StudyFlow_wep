@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="theme.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyFlow - Progress</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#edf0ff;
+      color:#1f2340;
+    }
+
+    .container{
+      display:flex;
+      min-height:100vh;
+    }
+
+    .sidebar{
+      width:270px;
+      background:linear-gradient(180deg,#6d79ff,#7357d8);
+      padding:24px 18px;
+      color:white;
+    }
+
+    .brand-box{
+      background:rgba(255,255,255,0.12);
+      border-radius:24px;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:24px;
+    }
+
+    .brand-box img{
+      width:68px;
+      height:68px;
+      border-radius:50%;
+      object-fit:cover;
+      background:white;
+      padding:4px;
+      flex-shrink:0;
+    }
+
+    .brand-text h2{
+      font-size:22px;
+      margin-bottom:4px;
+    }
+
+    .brand-text p{
+      font-size:14px;
+      color:rgba(255,255,255,0.85);
+      line-height:1.4;
+    }
+
+    .menu{
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .menu li{
+      background:rgba(255,255,255,0.11);
+      border-radius:18px;
+      padding:16px 18px;
+      transition:0.25s ease;
+      font-size:17px;
+      font-weight:600;
+    }
+
+    .menu li:hover,
+    .menu li.active{
+      background:rgba(255,255,255,0.23);
+      transform:translateX(4px);
+    }
+
+    .menu li a,
+    .menu li a:visited,
+    .menu li a:hover,
+    .menu li a:active{
+      text-decoration:none;
+      color:white;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      width:100%;
+    }
+
+    .main{
+      flex:1;
+      padding:28px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:24px;
+      gap:16px;
+    }
+
+    .topbar h1{
+      font-size:42px;
+      margin-bottom:6px;
+    }
+
+    .topbar p{
+      color:#6e7399;
+      font-size:16px;
+    }
+
+    .add-btn{
+      text-decoration:none;
+      display:inline-block;
+      border:none;
+      background:linear-gradient(135deg,#6d79ff,#7357d8);
+      color:white;
+      padding:14px 20px;
+      border-radius:16px;
+      font-size:15px;
+      font-weight:bold;
+      box-shadow:0 10px 20px rgba(109,121,255,0.22);
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:24px;
+    }
+
+    .stat-card{
+      color:white;
+      border-radius:22px;
+      padding:24px;
+      min-height:120px;
+      box-shadow:0 12px 22px rgba(0,0,0,0.08);
+    }
+
+    .stat-card h3{
+      font-size:18px;
+      margin-bottom:16px;
+      font-weight:600;
+    }
+
+    .stat-card .number{
+      font-size:36px;
+      font-weight:bold;
+      margin-bottom:6px;
+    }
+
+    .stat-card small{
+      font-size:14px;
+      opacity:0.92;
+    }
+
+    .purple{ background:linear-gradient(135deg,#6d79ff,#6b57cb); }
+    .pink{ background:linear-gradient(135deg,#ff71b8,#f05d87); }
+    .blue{ background:linear-gradient(135deg,#4ba3ff,#1cc8e8); }
+    .green{ background:linear-gradient(135deg,#36d98a,#49e5c2); }
+
+    .progress-layout{
+      display:grid;
+      grid-template-columns:1.3fr 0.85fr;
+      gap:22px;
+      margin-bottom:22px;
+    }
+
+    .panel{
+      background:white;
+      border-radius:24px;
+      padding:22px;
+      box-shadow:0 12px 28px rgba(41,48,95,0.08);
+    }
+
+    .panel h2{
+      font-size:30px;
+      margin-bottom:18px;
+    }
+
+    .subject{
+      margin-bottom:24px;
+    }
+
+    .subject:last-child{
+      margin-bottom:0;
+    }
+
+    .subject-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+      font-size:17px;
+      font-weight:700;
+    }
+
+    .subject-row span:last-child{
+      color:#6c72a2;
+      font-size:15px;
+      font-weight:600;
+    }
+
+    .progress-bar{
+      width:100%;
+      height:14px;
+      background:#e8ebfb;
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:8px;
+    }
+
+    .progress-fill{
+      height:100%;
+      border-radius:999px;
+    }
+
+    .fill1{ width:75%; background:linear-gradient(135deg,#6d79ff,#7357d8); }
+    .fill2{ width:52%; background:linear-gradient(135deg,#ff71b8,#f05d87); }
+    .fill3{ width:88%; background:linear-gradient(135deg,#36d98a,#49e5c2); }
+    .fill4{ width:61%; background:linear-gradient(135deg,#4ba3ff,#1cc8e8); }
+    .fill5{ width:47%; background:linear-gradient(135deg,#9d7bff,#6d79ff); }
+
+    .subject p{
+      color:#7a809e;
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .summary-box{
+      text-align:center;
+      background:linear-gradient(135deg,#6d79ff,#7357d8);
+      color:white;
+      border-radius:24px;
+      padding:28px 22px;
+      margin-bottom:22px;
+      box-shadow:0 12px 24px rgba(88,82,214,0.2);
+    }
+
+    .circle{
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      margin:0 auto 18px;
+      background:
+        radial-gradient(closest-side, #6d79ff 73%, transparent 74% 100%),
+        conic-gradient(#ffffff 0 68%, rgba(255,255,255,0.22) 68% 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:30px;
+      font-weight:bold;
+      color:white;
+      border:8px solid rgba(255,255,255,0.12);
+    }
+
+    .summary-box h3{
+      font-size:28px;
+      margin-bottom:8px;
+    }
+
+    .summary-box p{
+      font-size:15px;
+      line-height:1.6;
+      opacity:0.92;
+    }
+
+    .goal-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .goal-item{
+      background:#f6f7fc;
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .goal-item h4{
+      font-size:17px;
+      margin-bottom:6px;
+    }
+
+    .goal-item p{
+      color:#747a9b;
+      font-size:14px;
+      margin-bottom:10px;
+    }
+
+    .tag{
+      display:inline-block;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    .done{
+      background:#dff8ed;
+      color:#18a05d;
+    }
+
+    .progress-tag{
+      background:#e7eaff;
+      color:#5761be;
+    }
+
+    .pending{
+      background:#fff0cf;
+      color:#b88313;
+    }
+
+    .bottom-panel{
+      background:white;
+      border-radius:24px;
+      padding:22px;
+      box-shadow:0 12px 28px rgba(41,48,95,0.08);
+    }
+
+    .bottom-panel h2{
+      font-size:28px;
+      margin-bottom:18px;
+    }
+
+    .week-grid{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:12px;
+    }
+
+    .week-box{
+      background:#f5f7ff;
+      border-radius:18px;
+      padding:14px;
+      text-align:center;
+    }
+
+    .week-box h4{
+      font-size:15px;
+      margin-bottom:10px;
+      color:#5b6189;
+    }
+
+    .hours{
+      font-size:24px;
+      font-weight:bold;
+      color:#1f2340;
+      margin-bottom:6px;
+    }
+
+    .small-note{
+      font-size:12px;
+      color:#7d82a3;
+    }
+
+    @media (max-width:1200px){
+      .stats{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .progress-layout{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:900px){
+      .container{
+        flex-direction:column;
+      }
+
+      .sidebar{
+        width:100%;
+      }
+
+      .week-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media (max-width:640px){
+      .stats{
+        grid-template-columns:1fr;
+      }
+
+      .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .topbar h1{
+        font-size:32px;
+      }
+
+      .week-grid{
+        grid-template-columns:1fr;
+      }
+
+      .main{
+        padding:18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="brand-box">
+        <img src="IMAGE3/logo-StudyFlow3.png" alt="StudyFlow Logo">
+        <div class="brand-text">
+          <h2>StudyFlow</h2>
+          <p>Plan smarter. Study better.</p>
+        </div>
+      </div>
+
+      <ul class="menu">
+        <li><a href="dashboard_StudyFlow.html">🏠 Dashboard <span>›</span></a></li>
+        <li><a href="subjects.html">📚 Subjects <span>›</span></a></li>
+        <li><a href="tasks.html">📝 Tasks <span>›</span></a></li>
+        <li><a href="calendar.html">📅 Calendar <span>›</span></a></li>
+        <li class="active"><a href="progress.html">📈 Progress <span>›</span></a></li>
+        <li><a href="notes.html">📓 Notes <span>›</span></a></li>
+        <li><a href="settings.html">⚙️ Settings <span>›</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h1>Progress</h1>
+          <p>Track your study performance, subject completion, and weekly goals.</p>
+        </div>
+        <a href="tasks.html" class="add-btn">View Tasks</a>
+      </div>
+
+      <section class="stats">
+        <div class="stat-card purple">
+          <h3>Completed Tasks</h3>
+          <div class="number">27</div>
+          <small>Tasks completed this month</small>
+        </div>
+
+        <div class="stat-card pink">
+          <h3>Study Sessions</h3>
+          <div class="number">19</div>
+          <small>Total focus sessions</small>
+        </div>
+
+        <div class="stat-card blue">
+          <h3>Study Hours</h3>
+          <div class="number">42.5</div>
+          <small>Total learning time</small>
+        </div>
+
+        <div class="stat-card green">
+          <h3>Overall Progress</h3>
+          <div class="number">68%</div>
+          <small>Average subject completion</small>
+        </div>
+      </section>
+
+      <section class="progress-layout">
+        <div class="panel">
+          <h2>Subject Progress</h2>
+
+          <div class="subject">
+            <div class="subject-row">
+              <span>🌐 Web Development</span>
+              <span>75%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill fill1"></div>
+            </div>
+            <p>Assignments, projects, and weekly practical work are progressing well.</p>
+          </div>
+
+          <div class="subject">
+            <div class="subject-row">
+              <span>🔗 Automata Theory</span>
+              <span>52%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill fill2"></div>
+            </div>
+            <p>Regular expressions, chapter practice, and quiz review are in progress.</p>
+          </div>
+
+          <div class="subject">
+            <div class="subject-row">
+              <span>💻 Operating Systems</span>
+              <span>88%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill fill3"></div>
+            </div>
+            <p>Memory, scheduling, and processes topics are nearly completed.</p>
+          </div>
+
+          <div class="subject">
+            <div class="subject-row">
+              <span>⚙️ Algorithms</span>
+              <span>61%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill fill4"></div>
+            </div>
+            <p>Divide & conquer, greedy methods, and analysis need more revision.</p>
+          </div>
+
+          <div class="subject">
+            <div class="subject-row">
+              <span>🤖 Machine Learning</span>
+              <span>47%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill fill5"></div>
+            </div>
+            <p>Core concepts and model understanding are still being developed.</p>
+          </div>
+        </div>
+
+        <aside>
+          <div class="summary-box">
+            <div class="circle">68%</div>
+            <h3>Monthly Progress</h3>
+            <p>You are making solid progress this month. Keep focusing on your weaker subjects and stay consistent.</p>
+          </div>
+
+          <div class="panel">
+            <h2>Study Goals</h2>
+
+            <div class="goal-list">
+              <div class="goal-item">
+                <h4>Finish Web Assignment</h4>
+                <p>Complete final edits and submit before deadline.</p>
+                <span class="tag done">Done</span>
+              </div>
+
+              <div class="goal-item">
+                <h4>Revise Algorithms</h4>
+                <p>Practice divide & conquer and recurrence solving.</p>
+                <span class="tag progress-tag">In Progress</span>
+              </div>
+
+              <div class="goal-item">
+                <h4>Machine Learning Notes</h4>
+                <p>Summarize lecture and prepare key concepts.</p>
+                <span class="tag pending">Pending</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="bottom-panel">
+        <h2>Weekly Study Hours</h2>
+        <div class="week-grid">
+          <div class="week-box">
+            <h4>Sun</h4>
+            <div class="hours">3h</div>
+            <div class="small-note">Good start</div>
+          </div>
+
+          <div class="week-box">
+            <h4>Mon</h4>
+            <div class="hours">5h</div>
+            <div class="small-note">Focused</div>
+          </div>
+
+          <div class="week-box">
+            <h4>Tue</h4>
+            <div class="hours">4h</div>
+            <div class="small-note">Steady</div>
+          </div>
+
+          <div class="week-box">
+            <h4>Wed</h4>
+            <div class="hours">6h</div>
+            <div class="small-note">Excellent</div>
+          </div>
+
+          <div class="week-box">
+            <h4>Thu</h4>
+            <div class="hours">3h</div>
+            <div class="small-note">Average</div>
+          </div>
+
+          <div class="week-box">
+            <h4>Fri</h4>
+            <div class="hours">2h</div>
+            <div class="small-note">Light day</div>
+          </div>
+
+          <div class="week-box">
+            <h4>Sat</h4>
+            <div class="hours">4h</div>
+            <div class="small-note">Productive</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+<script src="theme.js"></script>
+</body>
+</html>

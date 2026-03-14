@@ -1,0 +1,94 @@
+body.dark-mode{
+  background:#161a33;
+  color:#f2f4ff;
+}
+
+body.dark-mode .main{
+  color:#f2f4ff;
+}
+
+body.dark-mode .topbar p,
+body.dark-mode p{
+  color:#b9bfdc;
+}
+
+body.dark-mode .sidebar{
+  background:linear-gradient(180deg,#20264f,#12162d);
+}
+
+body.dark-mode .brand-box{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.05);
+}
+
+body.dark-mode .menu li{
+  background:rgba(255,255,255,0.06);
+}
+
+body.dark-mode .menu li:hover,
+body.dark-mode .menu li.active{
+  background:rgba(255,255,255,0.14);
+}
+
+body.dark-mode .panel,
+body.dark-mode .task-card,
+body.dark-mode .subject-card,
+body.dark-mode .card,
+body.dark-mode .day-card,
+body.dark-mode .week-box,
+body.dark-mode .recent-item,
+body.dark-mode .goal-item,
+body.dark-mode .event-card{
+  background:#23284b;
+  color:#f2f4ff;
+  box-shadow:0 12px 28px rgba(0,0,0,0.25);
+}
+
+body.dark-mode .quote-box{
+  background:#2a3057;
+  color:#f2f4ff;
+  border-left:5px solid #7e87ff;
+}
+
+body.dark-mode .quick-note{
+  background:linear-gradient(135deg,#2e3568,#21264a);
+}
+
+body.dark-mode .quick-note textarea,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea{
+  background:#2e345f;
+  border:1px solid #3d467d;
+  color:#f2f4ff;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder{
+  color:#b5bbda;
+}
+
+body.dark-mode .mini-task,
+body.dark-mode .event{
+  background:#353d72;
+  color:#dfe4ff;
+}
+
+body.dark-mode .progress-bar{
+  background:#343b69;
+}
+
+body.dark-mode .tag-purple{
+  background:#353d72;
+  color:#dfe4ff;
+}
+
+body.dark-mode .tag-pink{
+  background:#4a2c3f;
+  color:#ffbfd1;
+}
+
+body.dark-mode .tag-green{
+  background:#253f36;
+  color:#aaf0cc;
+}

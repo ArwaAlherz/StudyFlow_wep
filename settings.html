@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="theme.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyFlow - Settings</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#edf0ff;
+      color:#1f2340;
+      transition:0.3s ease;
+    }
+
+    .container{
+      display:flex;
+      min-height:100vh;
+    }
+
+    .sidebar{
+      width:270px;
+      background:linear-gradient(180deg,#6d79ff,#7357d8);
+      padding:24px 18px;
+      color:white;
+    }
+
+    .brand-box{
+      background:rgba(255,255,255,0.12);
+      border-radius:24px;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:24px;
+    }
+
+    .brand-box img{
+      width:68px;
+      height:68px;
+      border-radius:50%;
+      object-fit:cover;
+      background:white;
+      padding:4px;
+      flex-shrink:0;
+    }
+
+    .brand-text h2{
+      font-size:22px;
+      margin-bottom:4px;
+    }
+
+    .brand-text p{
+      font-size:14px;
+      color:rgba(255,255,255,0.85);
+      line-height:1.4;
+    }
+
+    .menu{
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .menu li{
+      background:rgba(255,255,255,0.11);
+      border-radius:18px;
+      padding:16px 18px;
+      transition:0.25s ease;
+      font-size:17px;
+      font-weight:600;
+    }
+
+    .menu li:hover,
+    .menu li.active{
+      background:rgba(255,255,255,0.23);
+      transform:translateX(4px);
+    }
+
+    .menu li a,
+    .menu li a:visited,
+    .menu li a:hover,
+    .menu li a:active{
+      text-decoration:none;
+      color:white;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      width:100%;
+    }
+
+    .main{
+      flex:1;
+      padding:28px;
+    }
+
+    .topbar{
+      margin-bottom:24px;
+    }
+
+    .topbar h1{
+      font-size:42px;
+      margin-bottom:6px;
+    }
+
+    .topbar p{
+      color:#6e7399;
+      font-size:16px;
+    }
+
+    .settings-layout{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:22px;
+    }
+
+    .panel{
+      background:white;
+      border-radius:24px;
+      padding:22px;
+      box-shadow:0 12px 28px rgba(41,48,95,0.08);
+      transition:0.3s ease;
+    }
+
+    .panel h2{
+      font-size:26px;
+      margin-bottom:18px;
+    }
+
+    .form-group{
+      margin-bottom:16px;
+    }
+
+    .form-group label{
+      display:block;
+      margin-bottom:8px;
+      font-size:15px;
+      font-weight:600;
+      color:#4c5174;
+    }
+
+    .form-group input,
+    .form-group select{
+      width:100%;
+      padding:13px 14px;
+      border:1px solid #dfe3f8;
+      border-radius:14px;
+      font-size:15px;
+      outline:none;
+      background:#f8f9ff;
+      transition:0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus{
+      border-color:#6d79ff;
+      background:white;
+    }
+
+    .toggle-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px 0;
+      border-bottom:1px solid #eef1ff;
+      transition:0.3s ease;
+    }
+
+    .toggle-row:last-child{
+      border-bottom:none;
+    }
+
+    .toggle-row h4{
+      font-size:16px;
+      margin-bottom:4px;
+    }
+
+    .toggle-row p{
+      font-size:13px;
+      color:#7c81a0;
+    }
+
+    .switch{
+      position:relative;
+      width:52px;
+      height:28px;
+      flex-shrink:0;
+    }
+
+    .switch input{
+      display:none;
+    }
+
+    .slider{
+      position:absolute;
+      inset:0;
+      background:#d9def6;
+      border-radius:999px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .slider::before{
+      content:"";
+      position:absolute;
+      width:22px;
+      height:22px;
+      left:3px;
+      top:3px;
+      background:white;
+      border-radius:50%;
+      transition:0.3s;
+      box-shadow:0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .switch input:checked + .slider{
+      background:linear-gradient(135deg,#6d79ff,#7357d8);
+    }
+
+    .switch input:checked + .slider::before{
+      transform:translateX(24px);
+    }
+
+    .theme-options{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .theme-card{
+      flex:1;
+      min-width:140px;
+      background:#f7f8fd;
+      border:2px solid transparent;
+      border-radius:20px;
+      padding:16px;
+      cursor:pointer;
+      transition:0.25s;
+    }
+
+    .theme-card.active{
+      border-color:#6d79ff;
+      background:#eef1ff;
+    }
+
+    .theme-preview{
+      height:80px;
+      border-radius:14px;
+      margin-bottom:12px;
+    }
+
+    .light-preview{
+      background:linear-gradient(135deg,#ffffff,#eef0ff);
+      border:1px solid #e0e5fb;
+    }
+
+    .dark-preview{
+      background:linear-gradient(135deg,#252a55,#1a1d3b);
+    }
+
+    .theme-card h4{
+      font-size:16px;
+      margin-bottom:6px;
+    }
+
+    .theme-card p{
+      font-size:13px;
+      color:#6f7596;
+      line-height:1.5;
+    }
+
+    .save-btn{
+      margin-top:18px;
+      border:none;
+      background:linear-gradient(135deg,#6d79ff,#7357d8);
+      color:white;
+      padding:14px 20px;
+      border-radius:16px;
+      font-size:15px;
+      font-weight:bold;
+      cursor:pointer;
+      box-shadow:0 10px 20px rgba(109,121,255,0.22);
+      transition:0.2s;
+    }
+
+    .save-btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .danger-btn{
+      margin-top:12px;
+      border:none;
+      background:#ffe3ea;
+      color:#d84d77;
+      padding:14px 20px;
+      border-radius:16px;
+      font-size:15px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.2s;
+    }
+
+    .danger-btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .message{
+      position:fixed;
+      top:20px;
+      right:20px;
+      background:#23284b;
+      color:white;
+      padding:14px 18px;
+      border-radius:14px;
+      box-shadow:0 10px 20px rgba(0,0,0,0.2);
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(-10px);
+      transition:0.3s;
+      z-index:999;
+    }
+
+    .message.show{
+      opacity:1;
+      pointer-events:auto;
+      transform:translateY(0);
+    }
+
+    /* DARK MODE */
+body.dark-mode .sidebar{
+  background:linear-gradient(180deg,#20264f,#12162d);
+}
+    body.dark-mode{
+      background:#161a33;
+      color:#f2f4ff;
+    }
+
+    body.dark-mode .main{
+      color:#f2f4ff;
+    }
+
+    body.dark-mode .topbar p,
+    body.dark-mode .panel p,
+    body.dark-mode .theme-card p,
+    body.dark-mode .toggle-row p{
+      color:#b9bfdc;
+    }
+
+    body.dark-mode .panel{
+      background:#23284b;
+      color:#f2f4ff;
+      box-shadow:0 12px 28px rgba(0,0,0,0.25);
+    }
+
+    body.dark-mode .form-group label{
+      color:#d8dcf3;
+    }
+
+    body.dark-mode .form-group input,
+    body.dark-mode .form-group select{
+      background:#2e345f;
+      border:1px solid #3d467d;
+      color:#f2f4ff;
+    }
+
+    body.dark-mode .form-group input::placeholder{
+      color:#b5bbda;
+    }
+
+    body.dark-mode .theme-card{
+      background:#2a3057;
+    }
+
+    body.dark-mode .theme-card.active{
+      background:#30386b;
+      border-color:#8590ff;
+    }
+
+    body.dark-mode .toggle-row{
+      border-bottom:1px solid #343b69;
+    }
+
+    body.dark-mode .danger-btn{
+      background:#4a2a39;
+      color:#ffb7ca;
+    }
+
+    @media (max-width:1100px){
+      .settings-layout{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:900px){
+      .container{
+        flex-direction:column;
+      }
+
+      .sidebar{
+        width:100%;
+      }
+    }
+
+    @media (max-width:640px){
+      .topbar h1{
+        font-size:32px;
+      }
+
+      .main{
+        padding:18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="message" id="messageBox">Saved successfully</div>
+
+  <div class="container">
+    <aside class="sidebar">
+      <div class="brand-box">
+        <img src="IMAGE3/logo-StudyFlow3.png" alt="StudyFlow Logo">
+        <div class="brand-text">
+          <h2>StudyFlow</h2>
+          <p>Plan smarter. Study better.</p>
+        </div>
+      </div>
+
+      <ul class="menu">
+        <li><a href="dashboard_StudyFlow.html">🏠 Dashboard <span>›</span></a></li>
+        <li><a href="subjects.html">📚 Subjects <span>›</span></a></li>
+        <li><a href="tasks.html">📝 Tasks <span>›</span></a></li>
+        <li><a href="calendar.html">📅 Calendar <span>›</span></a></li>
+        <li><a href="progress.html">📈 Progress <span>›</span></a></li>
+        <li><a href="notes.html">📓 Notes <span>›</span></a></li>
+        <li class="active"><a href="settings.html">⚙️ Settings <span>›</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <h1>Settings</h1>
+        <p>Customize your profile, preferences, and app experience.</p>
+      </div>
+
+      <section class="settings-layout">
+        <div class="panel">
+          <h2>Profile Settings</h2>
+
+          <div class="form-group">
+            <label>Full Name</label>
+            <input id="fullName" type="text" placeholder="Enter your full name">
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input id="email" type="email" placeholder="Enter your email">
+          </div>
+
+          <div class="form-group">
+            <label>Study Level</label>
+            <select id="studyLevel">
+              <option>Undergraduate</option>
+              <option>Graduate</option>
+              <option>Beginner</option>
+              <option>Advanced</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Main Focus</label>
+            <select id="mainFocus">
+              <option>Assignments</option>
+              <option>Exams</option>
+              <option>Projects</option>
+              <option>General Study</option>
+            </select>
+          </div>
+
+          <button class="save-btn" onclick="saveProfile()">Save Changes</button>
+          <button class="danger-btn" onclick="deleteAccount()">Delete Account</button>
+        </div>
+
+        <div class="panel">
+          <h2>Theme Settings</h2>
+
+          <div class="theme-options">
+            <div class="theme-card active" id="lightCard" onclick="setTheme('light')">
+              <div class="theme-preview light-preview"></div>
+              <h4>Light Theme</h4>
+              <p>Soft and clean design for daily planning.</p>
+            </div>
+
+            <div class="theme-card" id="darkCard" onclick="setTheme('dark')">
+              <div class="theme-preview dark-preview"></div>
+              <h4>Dark Theme</h4>
+              <p>Dark mode for late-night study sessions.</p>
+            </div>
+          </div>
+
+          <button type="button" class="save-btn" onclick="applyTheme()">Apply Theme</button>
+        </div>
+
+        <div class="panel">
+          <h2>Notifications</h2>
+
+          <div class="toggle-row">
+            <div>
+              <h4>Task Reminders</h4>
+              <p>Get reminders before upcoming tasks.</p>
+            </div>
+            <label class="switch">
+              <input id="taskReminders" type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <div>
+              <h4>Pomodoro Alerts</h4>
+              <p>Notify you when focus time ends.</p>
+            </div>
+            <label class="switch">
+              <input id="pomodoroAlerts" type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <div>
+              <h4>Weekly Summary</h4>
+              <p>Receive a summary of your study performance.</p>
+            </div>
+            <label class="switch">
+              <input id="weeklySummary" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <button class="save-btn" onclick="saveNotifications()">Save Notifications</button>
+        </div>
+
+        <div class="panel">
+          <h2>Study Preferences</h2>
+
+          <div class="form-group">
+            <label>Default Focus Session</label>
+            <select id="focusSession">
+              <option>25 Minutes</option>
+              <option>30 Minutes</option>
+              <option>45 Minutes</option>
+              <option>60 Minutes</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Break Time</label>
+            <select id="breakTime">
+              <option>5 Minutes</option>
+              <option>10 Minutes</option>
+              <option>15 Minutes</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Preferred Study Time</label>
+            <select id="studyTime">
+              <option>Morning</option>
+              <option>Afternoon</option>
+              <option>Evening</option>
+              <option>Night</option>
+            </select>
+          </div>
+
+          <button class="save-btn" onclick="savePreferences()">Save Preferences</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    let selectedTheme = localStorage.getItem("studyflow-theme") || "light";
+
+    function showMessage(text) {
+      const box = document.getElementById("messageBox");
+      box.textContent = text;
+      box.classList.add("show");
+
+      setTimeout(() => {
+        box.classList.remove("show");
+      }, 2200);
+    }
+
+    function updateThemeCards() {
+      document.getElementById("lightCard").classList.remove("active");
+      document.getElementById("darkCard").classList.remove("active");
+
+      if (selectedTheme === "light") {
+        document.getElementById("lightCard").classList.add("active");
+      } else {
+        document.getElementById("darkCard").classList.add("active");
+      }
+    }
+
+    function setTheme(theme) {
+      selectedTheme = theme;
+      updateThemeCards();
+    }
+
+    function applyTheme() {
+      localStorage.setItem("studyflow-theme", selectedTheme);
+
+      if (selectedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+        showMessage("Dark theme applied");
+      } else {
+        document.body.classList.remove("dark-mode");
+        showMessage("Light theme applied");
+      }
+    }
+
+    function saveProfile() {
+      const data = {
+        fullName: document.getElementById("fullName").value,
+        email: document.getElementById("email").value,
+        studyLevel: document.getElementById("studyLevel").value,
+        mainFocus: document.getElementById("mainFocus").value
+      };
+
+      localStorage.setItem("studyflow-profile", JSON.stringify(data));
+      showMessage("Profile settings saved");
+    }
+
+    function saveNotifications() {
+      const data = {
+        taskReminders: document.getElementById("taskReminders").checked,
+        pomodoroAlerts: document.getElementById("pomodoroAlerts").checked,
+        weeklySummary: document.getElementById("weeklySummary").checked
+      };
+
+      localStorage.setItem("studyflow-notifications", JSON.stringify(data));
+      showMessage("Notification settings saved");
+    }
+
+    function savePreferences() {
+      const data = {
+        focusSession: document.getElementById("focusSession").value,
+        breakTime: document.getElementById("breakTime").value,
+        studyTime: document.getElementById("studyTime").value
+      };
+
+      localStorage.setItem("studyflow-preferences", JSON.stringify(data));
+      showMessage("Study preferences saved");
+    }
+
+    function deleteAccount() {
+      const confirmDelete = confirm("Are you sure you want to delete your account settings?");
+      if (confirmDelete) {
+        localStorage.removeItem("studyflow-profile");
+        localStorage.removeItem("studyflow-notifications");
+        localStorage.removeItem("studyflow-preferences");
+        showMessage("Account settings deleted");
+      }
+    }
+
+    function loadSavedData() {
+      const savedProfile = JSON.parse(localStorage.getItem("studyflow-profile"));
+      const savedNotifications = JSON.parse(localStorage.getItem("studyflow-notifications"));
+      const savedPreferences = JSON.parse(localStorage.getItem("studyflow-preferences"));
+
+      if (savedProfile) {
+        document.getElementById("fullName").value = savedProfile.fullName || "";
+        document.getElementById("email").value = savedProfile.email || "";
+        document.getElementById("studyLevel").value = savedProfile.studyLevel || "Undergraduate";
+        document.getElementById("mainFocus").value = savedProfile.mainFocus || "Assignments";
+      }
+
+      if (savedNotifications) {
+        document.getElementById("taskReminders").checked = savedNotifications.taskReminders;
+        document.getElementById("pomodoroAlerts").checked = savedNotifications.pomodoroAlerts;
+        document.getElementById("weeklySummary").checked = savedNotifications.weeklySummary;
+      }
+
+      if (savedPreferences) {
+        document.getElementById("focusSession").value = savedPreferences.focusSession || "25 Minutes";
+        document.getElementById("breakTime").value = savedPreferences.breakTime || "5 Minutes";
+        document.getElementById("studyTime").value = savedPreferences.studyTime || "Morning";
+      }
+    }
+
+    if (selectedTheme === "dark") {
+      document.body.classList.add("dark-mode");
+    }
+
+    updateThemeCards();
+    loadSavedData();
+  </script>
+</body>
+</html>

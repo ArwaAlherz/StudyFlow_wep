@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="theme.css">
+<meta charset="UTF-8">
+<title>StudyFlow - Tasks</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#edf0ff;
+}
+
+.container{
+display:flex;
+min-height:100vh;
+}
+
+/* SIDEBAR */
+
+ .sidebar{
+      width:280px;
+      background:linear-gradient(180deg,#6d79ff,#7357d8);
+      color:white;
+      padding:24px 18px;
+    }
+
+
+
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:30px;
+}
+
+.logo img{
+width:55px;
+height:55px;
+border-radius:50%;
+background:white;
+padding:4px;
+}
+  .menu{
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .menu li{
+      background:rgba(255,255,255,0.11);
+      border-radius:18px;
+      padding:16px 18px;
+      transition:0.25s ease;
+      font-size:17px;
+      font-weight:600;
+    }
+
+    .menu li:hover,
+    .menu li.active{
+      background:rgba(255,255,255,0.23);
+      transform:translateX(4px);
+    }
+
+    .menu li a,
+    .menu li a:visited,
+    .menu li a:hover,
+    .menu li a:active{
+      text-decoration:none;
+      color:white;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      width:100%;
+    }
+
+/* MAIN */
+
+.main{
+flex:1;
+padding:35px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+}
+
+.header h1{
+font-size:34px;
+}
+
+.add-btn{
+background: linear-gradient(135deg,#6D79FF,#7357D8);
+color:white;
+padding:12px 22px;
+border:none;
+border-radius:14px;
+font-weight:600;
+cursor:pointer;
+font-size:16px;
+transition:0.2s;
+}
+
+.add-btn:hover{
+transform:scale(1.05);
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* TASKS */
+
+.tasks-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+}
+
+.task-card{
+background:white;
+padding:20px;
+border-radius:18px;
+box-shadow:0 10px 20px rgba(0,0,0,0.05);
+}
+
+.task-card h3{
+margin-bottom:6px;
+}
+
+.task-card p{
+color:#666;
+margin-bottom:15px;
+}
+
+.status{
+padding:6px 12px;
+border-radius:20px;
+font-size:13px;
+font-weight:bold;
+display:inline-block;
+}
+
+.high{
+background:#ffd9df;
+color:#d84a65;
+}
+
+.medium{
+background:#fff1cc;
+color:#b88a0a;
+}
+
+.done{
+background:#d9ffe8;
+color:#0c9a57;
+}
+/* POPUP */
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+justify-content:center;
+align-items:center;
+}
+
+.modal-box{
+background:white;
+padding:30px;
+border-radius:15px;
+width:300px;
+text-align:center;
+}
+
+.modal-box input{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+.modal-buttons{
+margin-top:15px;
+display:flex;
+justify-content:space-between;
+}
+
+.modal-buttons button{
+padding:8px 15px;
+border:none;
+border-radius:8px;
+background:#6D79FF;
+color:white;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="logo">
+<img src="IMAGE3/logo-StudyFlow3.png">
+<h2>StudyFlow</h2>
+</div>
+
+    <ul class="menu">
+        <li><a href="dashboard_StudyFlow.html">🏠 Dashboard <span>›</span></a></li>
+        <li><a href="subjects.html">📚 Subjects <span>›</span></a></li>
+        <li class="active"> <a href="tasks.html">📝 Tasks <span>›</span></a></li>
+        <li><a href="calendar.html">📅 Calendar <span>›</span></a></li>
+        <li><a href="progress.html">📈 Progress <span>›</span></a></li>
+        <li><a href="notes.html">📓 Notes <span>›</span></a></li>
+        <li><a href="settings.html">⚙️ Settings <span>›</span></a></li>
+      </ul>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<div class="header">
+
+<h1>Tasks</h1>
+
+<button class="add-btn" onclick="openModal()">+ Add Task</button>
+</div>
+
+
+<div class="tasks-grid" id="tasksList">
+
+<div class="task-card">
+<h3>Complete Web Assignment</h3>
+<p>Due today - 5:00 PM</p>
+<span class="status high">High</span>
+</div>
+
+
+<div class="task-card">
+<h3>Review Automata Notes</h3>
+<p>Tomorrow - 11:00 AM</p>
+<span class="status medium">Medium</span>
+</div>
+
+
+<div class="task-card">
+<h3>Prepare Quiz Summary</h3>
+<p>Thursday - 2:00 PM</p>
+<span class="status done">Done</span>
+</div>
+
+
+<div class="task-card">
+<h3>Read OS Chapter 4</h3>
+<p>Friday - 8:00 PM</p>
+<span class="status high">High</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- Add Task Popup -->
+
+<div id="taskModal" class="modal">
+
+<div class="modal-box">
+
+<h2>Add New Task</h2>
+
+<input id="taskName" type="text" placeholder="Task name">
+
+<input id="taskTime" type="text" placeholder="Due date / time">
+
+<div class="modal-buttons">
+<button onclick="createTask()">Add Task</button>
+<button onclick="closeModal()">Cancel</button>
+</div>
+
+</div>
+
+</div>
+<script>
+src="theme.js"
+
+function openModal(){
+document.getElementById("taskModal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("taskModal").style.display="none";
+}
+
+function createTask(){
+
+let name = document.getElementById("taskName").value;
+let time = document.getElementById("taskTime").value;
+
+if(name==="") return;
+
+let task = `
+<div class="task-card">
+<h3>${name}</h3>
+<p>${time}</p>
+<span class="status medium">New</span>
+</div>
+
+
+document.getElementById("tasksList").innerHTML += task;
+
+closeModal();
+
+document.getElementById("taskName").value="";
+document.getElementById("taskTime").value="";
+}
+
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

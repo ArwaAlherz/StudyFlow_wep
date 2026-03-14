@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="theme.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyFlow - Notes</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#edf0ff;
+      color:#1f2340;
+    }
+
+    .container{
+      display:flex;
+      min-height:100vh;
+    }
+
+    .sidebar{
+      width:270px;
+      background:linear-gradient(180deg,#6d79ff,#7357d8);
+      padding:24px 18px;
+      color:white;
+    }
+
+    .brand-box{
+      background:rgba(255,255,255,0.12);
+      border-radius:24px;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:24px;
+    }
+
+    .brand-box img{
+      width:68px;
+      height:68px;
+      border-radius:50%;
+      object-fit:cover;
+      background:white;
+      padding:4px;
+      flex-shrink:0;
+    }
+
+    .brand-text h2{
+      font-size:22px;
+      margin-bottom:4px;
+    }
+
+    .brand-text p{
+      font-size:14px;
+      color:rgba(255,255,255,0.85);
+      line-height:1.4;
+    }
+
+    .menu{
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .menu li{
+      background:rgba(255,255,255,0.11);
+      border-radius:18px;
+      padding:16px 18px;
+      transition:0.25s ease;
+      font-size:17px;
+      font-weight:600;
+    }
+
+    .menu li:hover,
+    .menu li.active{
+      background:rgba(255,255,255,0.23);
+      transform:translateX(4px);
+    }
+
+    .menu li a,
+    .menu li a:visited,
+    .menu li a:hover,
+    .menu li a:active{
+      text-decoration:none;
+      color:white;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      width:100%;
+    }
+
+    .main{
+      flex:1;
+      padding:28px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:24px;
+      gap:16px;
+    }
+
+    .topbar h1{
+      font-size:42px;
+      margin-bottom:6px;
+    }
+
+    .topbar p{
+      color:#6e7399;
+      font-size:16px;
+    }
+
+    .add-btn{
+      text-decoration:none;
+      display:inline-block;
+      border:none;
+      background:linear-gradient(135deg,#6d79ff,#7357d8);
+      color:white;
+      padding:14px 20px;
+      border-radius:16px;
+      font-size:15px;
+      font-weight:bold;
+      box-shadow:0 10px 20px rgba(109,121,255,0.22);
+    }
+
+    .notes-layout{
+      display:grid;
+      grid-template-columns:1.2fr 0.8fr;
+      gap:22px;
+      margin-bottom:22px;
+    }
+
+    .panel{
+      background:white;
+      border-radius:24px;
+      padding:22px;
+      box-shadow:0 12px 28px rgba(41,48,95,0.08);
+    }
+
+    .panel h2{
+      font-size:28px;
+      margin-bottom:18px;
+    }
+
+    .notes-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+    }
+
+    .note-card{
+      border-radius:20px;
+      padding:18px;
+      color:white;
+      min-height:180px;
+      box-shadow:0 10px 22px rgba(0,0,0,0.08);
+    }
+
+    .note-card h3{
+      font-size:22px;
+      margin-bottom:10px;
+    }
+
+    .note-card p{
+      font-size:14px;
+      line-height:1.6;
+      margin-bottom:14px;
+      opacity:0.95;
+    }
+
+    .note-card small{
+      display:inline-block;
+      font-size:12px;
+      background:rgba(255,255,255,0.18);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:bold;
+    }
+
+    .purple{ background:linear-gradient(135deg,#6d79ff,#6b57cb); }
+    .pink{ background:linear-gradient(135deg,#ff71b8,#f05d87); }
+    .blue{ background:linear-gradient(135deg,#4ba3ff,#1cc8e8); }
+    .green{ background:linear-gradient(135deg,#36d98a,#49e5c2); }
+
+    .quick-note{
+      background:linear-gradient(135deg,#6d79ff,#7357d8);
+      color:white;
+      border-radius:24px;
+      padding:22px;
+      box-shadow:0 12px 24px rgba(88,82,214,0.2);
+      margin-bottom:22px;
+    }
+
+    .quick-note h3{
+      font-size:26px;
+      margin-bottom:12px;
+    }
+
+    .quick-note textarea{
+      width:100%;
+      min-height:180px;
+      border:none;
+      outline:none;
+      resize:none;
+      border-radius:16px;
+      padding:16px;
+      font-size:15px;
+      margin-bottom:14px;
+      color:#1f2340;
+    }
+
+    .quick-note button{
+      border:none;
+      background:white;
+      color:#5a56c8;
+      padding:12px 18px;
+      border-radius:14px;
+      font-size:14px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .recent-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .recent-item{
+      background:#f6f7fc;
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .recent-item h4{
+      font-size:17px;
+      margin-bottom:6px;
+    }
+
+    .recent-item p{
+      color:#747a9b;
+      font-size:14px;
+      line-height:1.5;
+      margin-bottom:10px;
+    }
+
+    .tag{
+      display:inline-block;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    .tag-purple{
+      background:#e7eaff;
+      color:#5761be;
+    }
+
+    .tag-pink{
+      background:#ffe2ef;
+      color:#df5f8c;
+    }
+
+    .tag-green{
+      background:#dcf8ea;
+      color:#19a15f;
+    }
+
+    @media (max-width:1200px){
+      .notes-layout{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:900px){
+      .container{
+        flex-direction:column;
+      }
+
+      .sidebar{
+        width:100%;
+      }
+
+      .notes-grid{
+        grid-template-columns:1fr;
+      }
+body.dark-mode{
+  background:#161a33;
+  color:#f2f4ff;
+}
+
+body.dark-mode .main{
+  color:#f2f4ff;
+}
+
+body.dark-mode .topbar p,
+body.dark-mode p{
+  color:#b9bfdc;
+}
+
+/* sidebar */
+body.dark-mode{
+  background:#161a33;
+  color:#f2f4ff;
+}
+
+body.dark-mode .main{
+  color:#f2f4ff;
+}
+
+body.dark-mode .topbar p,
+body.dark-mode .panel p,
+body.dark-mode .note-card p,
+body.dark-mode .recent-item p{
+  color:#b9bfdc;
+}
+
+body.dark-mode .sidebar{
+  background:linear-gradient(180deg,#20264f,#12162d);
+}
+
+body.dark-mode .brand-box{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.05);
+}
+
+body.dark-mode .menu li{
+  background:rgba(255,255,255,0.06);
+}
+
+body.dark-mode .menu li:hover,
+body.dark-mode .menu li.active{
+  background:rgba(255,255,255,0.14);
+}
+
+body.dark-mode .panel,
+body.dark-mode .recent-item{
+  background:#23284b;
+  color:#f2f4ff;
+  box-shadow:0 12px 28px rgba(0,0,0,0.25);
+}
+
+body.dark-mode .quick-note{
+  background:linear-gradient(135deg,#2e3568,#21264a);
+}
+
+body.dark-mode .quick-note textarea{
+  background:#2e345f;
+  color:#f2f4ff;
+  border:1px solid #3d467d;
+}
+
+body.dark-mode .quick-note textarea::placeholder{
+  color:#b5bbda;
+}
+
+body.dark-mode .tag-purple{
+  background:#353d72;
+  color:#dfe4ff;
+}
+
+body.dark-mode .tag-pink{
+  background:#4a2c3f;
+  color:#ffbfd1;
+}
+
+body.dark-mode .tag-green{
+  background:#253f36;
+  color:#aaf0cc;
+}
+    }
+
+    @media (max-width:640px){
+      .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .topbar h1{
+        font-size:32px;
+      }
+
+      .main{
+        padding:18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="brand-box">
+        <img src="IMAGE3/logo-StudyFlow3.png" alt="StudyFlow Logo">
+        <div class="brand-text">
+          <h2>StudyFlow</h2>
+          <p>Plan smarter. Study better.</p>
+        </div>
+      </div>
+
+      <ul class="menu">
+        <li><a href="dashboard_StudyFlow.html">🏠 Dashboard <span>›</span></a></li>
+        <li><a href="subjects.html">📚 Subjects <span>›</span></a></li>
+        <li><a href="tasks.html">📝 Tasks <span>›</span></a></li>
+        <li><a href="calendar.html">📅 Calendar <span>›</span></a></li>
+        <li><a href="progress.html">📈 Progress <span>›</span></a></li>
+        <li class="active"><a href="notes.html">📓 Notes <span>›</span></a></li>
+        <li><a href="settings.html">⚙️ Settings <span>›</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h1>Notes</h1>
+          <p>Organize your study notes and keep important ideas in one place.</p>
+        </div>
+        <a href="#" class="add-btn">+ Add Note</a>
+      </div>
+
+      <section class="notes-layout">
+        <div class="panel">
+          <h2>Subject Notes</h2>
+
+          <div class="notes-grid">
+            <div class="note-card purple">
+              <h3>🌐 Web Development</h3>
+              <p>Remember to revise forms, validation, and responsive layout before the assignment deadline.</p>
+              <small>Updated today</small>
+            </div>
+
+            <div class="note-card pink">
+              <h3>🔗 Automata Theory</h3>
+              <p>Focus on regular expressions, DFA conversion, and solve examples from the last chapter.</p>
+              <small>2 notes</small>
+            </div>
+
+            <div class="note-card blue">
+              <h3>💻 Operating Systems</h3>
+              <p>Review scheduling algorithms, memory allocation, and process synchronization carefully.</p>
+              <small>Important</small>
+            </div>
+
+            <div class="note-card green">
+              <h3>⚙️ Algorithms</h3>
+              <p>Practice divide & conquer problems and compare greedy approach with dynamic thinking.</p>
+              <small>New topic</small>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="quick-note">
+            <h3>Quick Note</h3>
+            <textarea placeholder="Write a quick idea, reminder, or summary here..."></textarea>
+            <button>Save Note</button>
+          </div>
+
+          <div class="panel">
+            <h2>Recent Notes</h2>
+
+            <div class="recent-list">
+              <div class="recent-item">
+                <h4>Machine Learning Summary</h4>
+                <p>Supervised learning uses labeled data to train models and predict outputs.</p>
+                <span class="tag tag-purple">ML</span>
+              </div>
+
+              <div class="recent-item">
+                <h4>Quiz Reminder</h4>
+                <p>Revise automata examples before Thursday and review lecture slides.</p>
+                <span class="tag tag-pink">Quiz</span>
+              </div>
+
+              <div class="recent-item">
+                <h4>Project Idea</h4>
+                <p>Improve dashboard interaction by linking tasks with the calendar and notes.</p>
+                <span class="tag tag-green">Project</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+<script src="theme.js"></script>
+</body>
+</html>

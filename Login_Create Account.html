@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="theme.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Planner - Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg,#6f7cff,#7b63c9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 1100px;
+      min-height: 650px;
+      background: #f8f8fb;
+      border-radius: 28px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    }
+
+    .left-side {
+      background: linear-gradient(180deg, #5d6df6, #6a4fb3);
+      color: white;
+      padding: 50px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .logo-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+
+    .logo-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5d6df6;
+      font-size: 28px;
+      font-weight: bold;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .brand-text h1 {
+      font-size: 30px;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .brand-text p {
+      color: #e9e7ff;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .left-bottom {
+      margin-top: 30px;
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: #f2f0ff;
+      line-height: 1.7;
+    }
+
+    .right-side {
+      padding: 45px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f8f8fb;
+    }
+
+    .form-box {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .tabs {
+      display: flex;
+      background: #EEF0FF;
+      border-radius: 16px;
+      padding: 6px;
+      margin-bottom: 28px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      color: #4f4f63;
+      transition: 0.3s;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #5d6df6, #6a4fb3);
+      color: white;
+      box-shadow: 0 8px 16px rgba(93, 109, 246, 0.25);
+    }
+
+    .form-section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-box h2 {
+      font-size: 34px;
+      color: #1f1f2e;
+      margin-bottom: 10px;
+    }
+
+    .form-box .subtitle {
+      color: #76768a;
+      margin-bottom: 28px;
+      font-size: 15px;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #35354a;
+      font-weight: 600;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 15px 16px;
+      border: 1px solid #dddcec;
+      border-radius: 14px;
+      outline: none;
+      font-size: 15px;
+      background: white;
+      transition: 0.3s;
+    }
+
+    .input-group input:focus {
+      border-color: #5d6df6;
+      box-shadow: 0 0 0 4px rgba(93, 109, 246, 0.12);
+    }
+
+    .forgot {
+      text-align: right;
+      margin-top: -8px;
+      margin-bottom: 20px;
+    }
+
+    .forgot a {
+      text-decoration: none;
+      font-size: 14px;
+      color: #5d6df6;
+      font-weight: 600;
+    }
+
+    .main-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #5d6df6, #6a4fb3);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 18px rgba(93, 109, 246, 0.22);
+    }
+
+    .main-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #8b8ba0;
+      font-size: 14px;
+      margin: 18px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #d9d8e7;
+    }
+
+    .social-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .social-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid #dddcec;
+      background: white;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      color: #2c2c3d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: 0.3s;
+    }
+
+    .social-btn:hover {
+      background: #f3f3fb;
+      transform: translateY(-1px);
+    }
+
+    .social-icon {
+      font-size: 18px;
+    }
+
+    .small-note {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 13px;
+      color: #88889a;
+      line-height: 1.6;
+    }
+.logo-circle{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.logo-circle img{
+  width:95%;
+  height:auto;
+}
+
+    @media (max-width: 900px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+      }
+
+      .left-side {
+        display: none;
+      }
+
+      .right-side {
+        padding: 35px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+
+  <div class="auth-container">
+    <!-- Left Side -->
+    <div class="left-side">
+      <div>
+        <div class="logo-box">
+         <div class="logo-circle">
+  <img src="IMAGE3/logo-StudyFlow3.png" alt="StudyFlow Logo">
+</div>
+          <div class="brand-text">
+            <h1>StudyFlow</h1>
+           
+          </div>
+        </div>
+
+        <div class="left-bottom">
+          <div class="feature-card">
+            <h3>📅 Smart Planning</h3>
+            <p>Create study tasks, organize your schedule, and stay ahead of deadlines.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3>📈 Track Progress</h3>
+            <p>Monitor completed tasks, study hours, and overall performance easily.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3>⏱ Stay Focused</h3>
+            <p>Use productivity tools like calendar view and focus sessions to keep going.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side -->
+    <div class="right-side">
+      <div class="form-box">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="showForm('login', event)">Login</button>
+
+          <button class="tab-btn" onclick="showForm('signup', event)">Create Account</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login" class="form-section active">
+          <h2>Welcome Back</h2>
+          <p class="subtitle">Log in to continue your study journey.</p>
+
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" placeholder="Enter your email">
+          </div>
+
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" placeholder="Enter your password">
+          </div>
+
+          <div class="forgot">
+            <a href="#">Forgot password?</a>
+          </div>
+
+          <button class="main-btn">Login</button>
+
+          <div class="divider">or continue with</div>
+
+          <div class="social-buttons">
+            <button class="social-btn">
+              <span class="social-icon">🔵</span>
+              Continue with Google
+            </button>
+            <button class="social-btn">
+              <span class="social-icon"></span>
+              Continue with Apple
+            </button>
+          </div>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signup" class="form-section">
+          <h2>Create Account</h2>
+          <p class="subtitle">Start organizing your study plan today.</p>
+
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" placeholder="Enter your full name">
+          </div>
+
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" placeholder="Enter your email">
+          </div>
+
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" placeholder="Create a password">
+          </div>
+
+          <div class="input-group">
+            <label>Confirm Password</label>
+            <input type="password" placeholder="Confirm your password">
+          </div>
+
+          <button class="main-btn">Create Account</button>
+
+          <div class="divider">or sign up with</div>
+
+          <div class="social-buttons">
+            <button class="social-btn">
+              <span class="social-icon">🔵</span>
+              Continue with Google
+            </button>
+            <button class="social-btn">
+              <span class="social-icon"></span>
+              Continue with Apple
+            </button>
+          </div>
+        </div>
+
+        <p class="small-note">
+          By continuing, you agree to our Terms of Service and Privacy Policy.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showForm(formId, event) {
+      const forms = document.querySelectorAll('.form-section');
+      const tabs = document.querySelectorAll('.tab-btn');
+
+      forms.forEach(form => form.classList.remove('active'));
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      document.getElementById(formId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+  </script>
+<script src="theme.js"></script>
+</body>
+</html>
